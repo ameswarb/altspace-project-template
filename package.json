@@ -8,6 +8,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "altspace": "^0.5.3",
+    "babel": "^6.5.2",
+    "babel-polyfill": "^6.7.4",
     "browserify": "^13.0.0",
     "del": "^2.2.0",
     "event-stream": "^3.3.2",

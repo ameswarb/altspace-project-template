@@ -1,4 +1,5 @@
 node_modules
-dist
 npm-debug.log
 config.yaml
+src/models/examples
+src/vendor
