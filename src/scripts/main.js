@@ -22,7 +22,7 @@ function createCube() {
   // else antialiasing won't work (this is a limitation of WebGL)
   var materialCreator = new THREE.MTLLoader.MaterialCreator();
   materialCreator.crossOrigin = 'anonymous';
-  var url = 'models/examples/cube/altspace-logo.jpg';
+  var url = 'models/yeoman-logo.png';
   var texture = materialCreator.loadTexture(url);
   var geometry = new THREE.BoxGeometry(1, 1, 1);
   var material = new THREE.MeshBasicMaterial({ color:'#ffffff', map: texture });
