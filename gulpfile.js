@@ -1,20 +1,14 @@
 /*jslint node: true */
 'use strict';
 
-var browserify = require('browserify');
 var connect = require('gulp-connect');
 var copy = require('gulp-copy');
 var del = require('del');
 var es = require('event-stream');
 var fs = require('fs');
-var glob = require('glob');
 var gulp = require('gulp');
-var rename = require('gulp-rename');
-var source = require('vinyl-source-stream');
 var watch = require('gulp-watch');
 var yaml = require('js-yaml');
-
-var filelog = require('gulp-filelog');
 
 try {
   var cfg = yaml.safeLoad(fs.readFileSync('./config.yaml', 'utf8'));
@@ -34,21 +28,8 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('vendor', ['clean'], function (done) {
-  var streams = [];
-
-  streams.push(gulp.src('./node_modules/altspace/dist/altspace.min.js')
-         .pipe(copy(cfg.path.src + 'vendor/altspace', { prefix: 3 })));
-
-  streams.push(gulp.src('./node_modules/altspace/lib/*')
-         .pipe(copy(cfg.path.src + 'vendor/altspace', { prefix: 2 })));
-
-  streams.push(gulp.src('./node_modules/altspace/src/utilities/**/*')
-         .pipe(copy(cfg.path.src + 'vendor/altspace', { prefix: 3 })));
-
-  streams.push(gulp.src('./vendor/**/*')
-         .pipe(copy(cfg.path.src + 'vendor/altspace', { prefix: 2 })));
-
-  es.merge(streams).on('end', done);
+  return gulp.src('./vendor/**/*')
+             .pipe(copy(cfg.path.src + 'vendor', { prefix: 1 }));
 });
 
 gulp.task('exampleModels', function () {
@@ -56,33 +37,11 @@ gulp.task('exampleModels', function () {
              .pipe(copy(cfg.path.src + 'models/examples', { prefix: 4 }));
 });
 
-gulp.task('browserify', ['clean', 'vendor'], function (done) {
-  glob(cfg.path.src + 'scripts/*.js', function (err, files) {
-    if (err) done(err);
-
-    var tasks = files.map(function (entry) {
-      return browserify({ entries: [entry] })
-        .bundle()
-        .pipe(source(entry))
-        .pipe(rename(function (path) {
-          path.dirname = pruneSrc(path.dirname);
-          path.extname = '.bundle' + path.extname;
-          return path;
-        }))
-        .pipe(gulp.dest(cfg.path.dist));
-    });
-
-    es.merge(tasks).on('end', done);
-  });
-});
-
-gulp.task('dev', ['clean', 'browserify'], function (done) {
+gulp.task('dev', ['clean', 'vendor'], function (done) {
   var streams = [];
 
-  streams.push(gulp.src([cfg.path.src + '/**/*',
-            '!' + cfg.path.src + '/**/*.js',
-           ])
-      .pipe(copy(cfg.path.dist, { prefix: 1 })));
+  streams.push(gulp.src(cfg.path.src + '/**/*')
+         .pipe(copy(cfg.path.dist, { prefix: 1 })));
 
   streams.push(gulp.src(cfg.path.src + 'vendor/**/*')
       .pipe(copy(cfg.path.dist, { prefix: 1 }))
@@ -104,10 +63,5 @@ gulp.task('connect', function () {
     livereload: true,
   });
 });
-
-// gulp.task('connect:reload', ['dev'], function (event) {
-//   return gulp.src(cfg.path.dist + '*.html')
-//              .pipe(connect.reload());
-// });
 
 gulp.task('default', ['connect', 'dev', 'watch']);
