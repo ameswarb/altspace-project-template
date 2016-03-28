@@ -1,0 +1,28 @@
+{
+  "name": "altspace-project-template",
+  "version": "1.0.0",
+  "description": "altspace-project-template",
+  "private": true,
+  "main": "gulpfile.js",
+  "author": "Alex Meswarb",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "altspace": "^0.5.3",
+    "browserify": "^13.0.0",
+    "del": "^2.2.0",
+    "event-stream": "^3.3.2",
+    "firebase": "^2.4.1",
+    "glob": "^7.0.3",
+    "gulp": "^3.9.1",
+    "gulp-connect": "^3.2.1",
+    "gulp-copy": "0.0.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-watch": "^4.3.5",
+    "jquery": "^2.2.2",
+    "js-yaml": "^3.5.5",
+    "three": "^0.75.0",
+    "three-objmtll-loader": "^1.0.1",
+    "three-orbit-controls": "^72.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
